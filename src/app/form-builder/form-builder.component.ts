@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormBuilder } from '@angular/forms'
 import { ObjectSchema } from './core/types'
 
 @Component({
@@ -8,7 +7,10 @@ import { ObjectSchema } from './core/types'
   styleUrls: ['./form-builder.component.scss'],
 })
 export class FormBuilderComponent implements OnInit {
+  // Do not modify this property
   @Input() schema!: ObjectSchema
+
+  // Do not modify this property
   @Output() onSubmit = new EventEmitter<any>()
 
   constructor() {}

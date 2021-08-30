@@ -1,6 +1,10 @@
+// Do not modify this file
+// -----------------------
+
 import { Component } from '@angular/core'
 import { studentProfileSchema } from './schemas/student-profile'
 import { testAllPropertiesSchema } from './schemas/test-all-properties'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

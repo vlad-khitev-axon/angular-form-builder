@@ -1,3 +1,6 @@
+// Do not modify this file
+// -----------------------
+
 import { ObjectSchema } from '../form-builder/core/types'
 
 export const testAllPropertiesSchema: ObjectSchema = {

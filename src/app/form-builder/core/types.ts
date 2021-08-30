@@ -1,3 +1,6 @@
+// Do not modify this file
+// -----------------------
+
 /**
  * Glossary
  *
