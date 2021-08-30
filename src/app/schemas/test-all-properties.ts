@@ -1,4 +1,4 @@
-import { ObjectSchema } from '../form-builder/core/types';
+import { ObjectSchema } from '../form-builder/core/types'
 
 export const testAllPropertiesSchema: ObjectSchema = {
   type: 'object',
@@ -170,4 +170,4 @@ export const testAllPropertiesSchema: ObjectSchema = {
       },
     },
   ],
-};
+}

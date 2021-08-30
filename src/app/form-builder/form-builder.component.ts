@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ObjectSchema } from './core/types';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { FormBuilder } from '@angular/forms'
+import { ObjectSchema } from './core/types'
 
 @Component({
   selector: 'app-form-builder',
@@ -8,15 +8,15 @@ import { ObjectSchema } from './core/types';
   styleUrls: ['./form-builder.component.scss'],
 })
 export class FormBuilderComponent implements OnInit {
-  @Input() schema!: ObjectSchema;
-  @Output() onSubmit = new EventEmitter<any>();
+  @Input() schema!: ObjectSchema
+  @Output() onSubmit = new EventEmitter<any>()
 
   constructor() {}
 
   ngOnInit(): void {}
 
   handleSubmit(event: Event) {
-    event.preventDefault();
+    event.preventDefault()
 
     // Here you have an event (of type SubmitEvent).
     // You can go two ways:
@@ -25,6 +25,6 @@ export class FormBuilderComponent implements OnInit {
     // Regardless of your choice, the goal is to submit all form values to `onSubmit` property.
     // The structure (shape) of values should match the schema.
 
-    this.onSubmit.emit({});
+    this.onSubmit.emit({})
   }
 }

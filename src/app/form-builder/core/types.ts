@@ -15,55 +15,55 @@
 //
 
 export type StringSchema = {
-  type: 'string';
-  name: string;
-  label?: string;
-  required?: boolean;
-  multiline?: boolean;
-  inputType?: string;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: string;
-};
+  type: 'string'
+  name: string
+  label?: string
+  required?: boolean
+  multiline?: boolean
+  inputType?: string
+  minLength?: number
+  maxLength?: number
+  pattern?: string
+}
 
 export type NumberSchema = {
-  type: 'number';
-  name: string;
-  label?: string;
-  required?: boolean;
-  integer?: boolean;
-  minimum?: number;
-  maximum?: number;
-};
+  type: 'number'
+  name: string
+  label?: string
+  required?: boolean
+  integer?: boolean
+  minimum?: number
+  maximum?: number
+}
 
 export type EnumSchema = {
-  type: 'enum';
-  name: string;
-  label?: string;
-  required?: boolean;
-  options: Array<{ value: string; label: string }>;
-};
+  type: 'enum'
+  name: string
+  label?: string
+  required?: boolean
+  options: Array<{ value: string; label: string }>
+}
 
 export type BooleanSchema = {
-  type: 'boolean';
-  name: string;
-  label?: string;
-};
+  type: 'boolean'
+  name: string
+  label?: string
+}
 
 export type ArraySchema = {
-  type: 'array';
-  name: string;
-  label?: string;
-  required?: boolean;
-  item: ObjectSchema;
-};
+  type: 'array'
+  name: string
+  label?: string
+  required?: boolean
+  item: ObjectSchema
+}
 
 export type ObjectSchema = {
-  type: 'object';
-  name: string;
-  label?: string;
-  properties: Array<FormSchema>;
-};
+  type: 'object'
+  name: string
+  label?: string
+  properties: Array<FormSchema>
+}
 
 export type FormSchema =
   | StringSchema
@@ -71,4 +71,4 @@ export type FormSchema =
   | EnumSchema
   | BooleanSchema
   | ArraySchema
-  | ObjectSchema;
+  | ObjectSchema

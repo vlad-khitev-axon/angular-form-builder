@@ -1,4 +1,4 @@
-import { ObjectSchema } from '../form-builder/core/types';
+import { ObjectSchema } from '../form-builder/core/types'
 
 export const studentProfileSchema: ObjectSchema = {
   type: 'object',
@@ -150,4 +150,4 @@ export const studentProfileSchema: ObjectSchema = {
       label: 'Have a computer and internet',
     },
   ],
-};
+}
