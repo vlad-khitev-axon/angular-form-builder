@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { FormArray, FormControl, FormGroup } from '@angular/forms'
 import { ObjectSchema } from './core/types'
 
 @Component({
@@ -13,9 +14,33 @@ export class FormBuilderComponent implements OnInit {
   // Do not modify this property
   @Output() onSubmit = new EventEmitter<any>()
 
+  myFormGroup!:FormGroup
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.myFormGroup = this.toFormGroup(this.schema)
+  }
+
+  toFormGroup(schema: ObjectSchema ) {
+    const group: any = {};
+
+    schema.properties.forEach(items => {
+      // console.log(question)
+      if(items.type == 'string' || items.type == 'number' || items.type == 'enum' || items.type == 'boolean'){
+        group[items.name] = new FormControl() 
+      }
+      else if(items.type == 'array'){
+       group[items.name] = new FormArray([])
+      }
+      else if(items.type == 'object'){
+        group[items.name] = new FormControl() 
+      }
+      
+    });
+    return new FormGroup(group);
+  }
+
 
   handleSubmit(event: Event) {
     event.preventDefault()

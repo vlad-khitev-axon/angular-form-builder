@@ -1,26 +1,47 @@
-<form (submit)="handleSubmit($event)">
-  <!-- The code below is an example! Feel free to remove it! -->
-  <div class="row">
-    <div class="six columns">
-      <label for="exampleEmailInput">Your email</label>
-      <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
-    </div>
-    <div class="six columns">
-      <label for="exampleRecipientInput">Reason for contacting</label>
-      <select class="u-full-width" id="exampleRecipientInput">
-        <option value="Option 1">Questions</option>
-        <option value="Option 2">Admiration</option>
-        <option value="Option 3">Can I get your number?</option>
-      </select>
-    </div>
-  </div>
-  <label for="exampleMessage">Message</label>
-  <textarea class="u-full-width" placeholder="Hi Dave …" id="exampleMessage"></textarea>
-  <label class="example-send-yourself-copy">
-    <input type="checkbox">
-    <span class="label-body">Send a copy to yourself</span>
-  </label>
-  <!-- The code above is an example! Feel free to remove it! -->
 
-  <button type="submit">Submit</button>
-</form>
+    <form [formGroup]= "myFormGroup" >
+
+      <div   class="formGroup" *ngFor="let item of schema.properties ">
+          
+         <div *ngIf="item.type == 'string'">
+             <label  for="{{item.name}}">{{item.label}}</label>
+             <input [formControlName]="item.name" 
+                    id="{{item.name}}" 
+                    name="{{item.name}}" 
+                    [type]="item?.inputType" 
+                    [placeholder]="item.name">
+         </div>
+
+         <div *ngIf="item.type == 'number'" >
+              <label for="{{item.name}}">{{item.label}}</label>
+              <input [formControlName]="item.name" id="{{item.name}}" [placeholder]="item.name">
+         </div>
+
+         <div *ngIf="item.type == 'enum'">
+             <label for="{{item.name}}">{{item.label}}</label>
+             <select [formControlName]="item.name" id="{{item.name}}" name="{{item.name}}" id="">
+                 <option value="" selected disabled hidden>Choose here</option>
+                 <option *ngFor="let country of item.options" value="{{country.value}}">
+                  {{country.label}}
+                 </option>
+             </select>
+         </div>
+
+         <div *ngIf="item.type == 'boolean'">
+             <label for="{{item.name}}">{{item.label}}</label>
+              <input [formControlName]="item.name" id="{{item.name}}" type="checkbox"  name="{{item.name}}">
+         </div>
+
+      </div>
+  
+   <p>{{myFormGroup.value | json}}</p>
+     
+      <button  type="submit">submit</button>
+  </form>
+
+
+
+
+
+
+
