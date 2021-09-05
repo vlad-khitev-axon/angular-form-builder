@@ -1,45 +1,76 @@
 
+   
     <form [formGroup]= "myFormGroup" >
 
-      <div   class="formGroup" *ngFor="let item of schema.properties ">
+        <div   class="formGroup" *ngFor="let item of schema.properties ">
+            <!-- STRING -->
+           <div *ngIf="item.type == 'string'">
+               <label  for="{{item.name}}">{{item.label}}</label>
+               <input [formControlName]="item.name" 
+                      id="{{item.name}}" 
+                      name="{{item.name}}" 
+                      [type]="item?.inputType" 
+                      [placeholder]="item.name"
+                      *ngIf="!item.multiline; else textArea">
+
+                      <ng-template #textArea>
+                          <textarea    id="{{item.name}}" name="{{item.name}}" 
+                                     id="" cols="30" rows="10"
+                                     [formControlName]="item.name" >
+                                     
+                          </textarea>
+                      </ng-template>
+           </div>
+
           
-         <div *ngIf="item.type == 'string'">
-             <label  for="{{item.name}}">{{item.label}}</label>
-             <input [formControlName]="item.name" 
-                    id="{{item.name}}" 
-                    name="{{item.name}}" 
-                    [type]="item?.inputType" 
-                    [placeholder]="item.name">
-         </div>
+           <!-- NUMBER -->
+           <div *ngIf="item.type == 'number'" >
+                <label for="{{item.name}}">{{item.label}}</label>
+                <input [formControlName]="item.name" id="{{item.name}}" [placeholder]="item.name">
+           </div>
+           <!-- ENUM -->
+           <div *ngIf="item.type == 'enum'">
+               <label for="{{item.name}}">{{item.label}}</label>
+               <select [formControlName]="item.name" id="{{item.name}}" name="{{item.name}}" id="">
+                   <option value="" selected disabled hidden>Choose here</option>
+                   <option *ngFor="let country of item.options" value="{{country.value}}">
+                    {{country.label}}
+                   </option>
+               </select>
+           </div>
 
-         <div *ngIf="item.type == 'number'" >
-              <label for="{{item.name}}">{{item.label}}</label>
-              <input [formControlName]="item.name" id="{{item.name}}" [placeholder]="item.name">
-         </div>
+           <div *ngIf="item.type == 'boolean'">
+               <label for="{{item.name}}">{{item.label}}</label>
+                <input [formControlName]="item.name" id="{{item.name}}" type="checkbox"  name="{{item.name}}">
+           </div>
 
-         <div *ngIf="item.type == 'enum'">
-             <label for="{{item.name}}">{{item.label}}</label>
-             <select [formControlName]="item.name" id="{{item.name}}" name="{{item.name}}" id="">
-                 <option value="" selected disabled hidden>Choose here</option>
-                 <option *ngFor="let country of item.options" value="{{country.value}}">
-                  {{country.label}}
-                 </option>
-             </select>
-         </div>
+           <!-- ARRAY -->
+           <div class="array__set" *ngIf="item.type == 'array'">
+               <div formArrayName="{{item.name}}">
+                   <label for="{{item.name}}">
+                       {{item.label}}
+                   </label>
+                   <div   *ngFor="let q of item.item.properties ">
+                        <label for="{{q.name}}">{{q.label}}</label>
+                        <input id="{{q.name}}"  name="{{q.name}}" [placeholder]="q.name" >
+                   </div>
+                  
+               </div>
+           </div>
 
-         <div *ngIf="item.type == 'boolean'">
-             <label for="{{item.name}}">{{item.label}}</label>
-              <input [formControlName]="item.name" id="{{item.name}}" type="checkbox"  name="{{item.name}}">
-         </div>
-
-      </div>
-  
-   <p>{{myFormGroup.value | json}}</p>
-     
-      <button  type="submit">submit</button>
-  </form>
-
-
+           <!-- OBJECT -->
+           <div *ngIf="item.type == 'object'">
+               <label for="">{{item.label}}</label>
+                <div *ngFor="let item of item.properties">
+                   <input type="text" [placeholder]="item.name">
+                </div>
+           </div>
+        </div>
+    
+     <p>{{myFormGroup.value | json}}</p>
+       
+        <button (click)=" logVAlue()"  type="submit">submit</button>
+    </form>
 
 
 

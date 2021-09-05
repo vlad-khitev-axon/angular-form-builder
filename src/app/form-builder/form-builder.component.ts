@@ -19,10 +19,10 @@ export class FormBuilderComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.myFormGroup = this.toFormGroup(this.schema)
+    this.myFormGroup = this.creatForm(this.schema)
   }
 
-  toFormGroup(schema: ObjectSchema ) {
+  creatForm(schema: ObjectSchema ) {
     const group: any = {};
 
     schema.properties.forEach(items => {
@@ -31,16 +31,20 @@ export class FormBuilderComponent implements OnInit {
         group[items.name] = new FormControl() 
       }
       else if(items.type == 'array'){
-       group[items.name] = new FormArray([])
+       group[items.name] = new FormArray([
+        this.creatForm(items.item)
+       ])
       }
-      else if(items.type == 'object'){
-        group[items.name] = new FormControl() 
-      }
+     
       
     });
     return new FormGroup(group);
   }
 
+
+  logVAlue(){
+    console.log(this.myFormGroup.value)
+}
 
   handleSubmit(event: Event) {
     event.preventDefault()

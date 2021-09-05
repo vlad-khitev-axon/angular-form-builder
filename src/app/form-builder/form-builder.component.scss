@@ -1,0 +1,27 @@
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
+
+.ng-valid  {
+  
+    .btn__invalid{
+      opacity: .9;
+      color: green;
+    }
+ }
+
+
+ .country__list{
+   width: 185px;
+ }
+ 
+
+ label {
+  display: table;
+ }
+
+ .array__set{
+   border: 1px solid black;
+   display: table;
+   padding: 20px;
+ }
