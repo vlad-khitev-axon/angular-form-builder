@@ -20,25 +20,35 @@ export class FormBuilderComponent implements OnInit {
 
   ngOnInit(): void {
     this.myFormGroup = this.creatForm(this.schema)
+
+   
+
+    console.log(this.myFormGroup.controls)
   }
 
   creatForm(schema: ObjectSchema ) {
-    const group: any = {};
+    const controls: any = {};
 
     schema.properties.forEach(items => {
       // console.log(question)
       if(items.type == 'string' || items.type == 'number' || items.type == 'enum' || items.type == 'boolean'){
-        group[items.name] = new FormControl() 
+        controls[items.name] = new FormControl('') 
       }
       else if(items.type == 'array'){
-       group[items.name] = new FormArray([
+        controls[items.name] = new FormArray([
         this.creatForm(items.item)
        ])
       }
-     
+      else if(items.type == 'object'){
+        controls[items.name] = this.creatForm(items)
+        // items.properties.forEach(res => {
+        //   controls[res.name] = new FormControl('')
+        // })
+        
+      }
       
     });
-    return new FormGroup(group);
+    return new FormGroup(controls);
   }
 
 

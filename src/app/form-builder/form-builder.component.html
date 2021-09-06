@@ -1,5 +1,7 @@
 
-   
+
+
+
     <form [formGroup]= "myFormGroup" >
 
         <div   class="formGroup" *ngFor="let item of schema.properties ">
@@ -38,7 +40,7 @@
                    </option>
                </select>
            </div>
-
+           <!-- BOOLEAN -->
            <div *ngIf="item.type == 'boolean'">
                <label for="{{item.name}}">{{item.label}}</label>
                 <input [formControlName]="item.name" id="{{item.name}}" type="checkbox"  name="{{item.name}}">
@@ -46,24 +48,28 @@
 
            <!-- ARRAY -->
            <div class="array__set" *ngIf="item.type == 'array'">
-               <div formArrayName="{{item.name}}">
-                   <label for="{{item.name}}">
-                       {{item.label}}
-                   </label>
-                   <div   *ngFor="let q of item.item.properties ">
-                        <label for="{{q.name}}">{{q.label}}</label>
-                        <input id="{{q.name}}"  name="{{q.name}}" [placeholder]="q.name" >
-                   </div>
-                  
+                <label for="{{item.name}}">
+                    {{item.label}}
+                </label>
+               <div formArrayName="{{item.name}}" >
+                    <div  >
+                        <div *ngFor = "let q of "></div>
+                    </div>
+                     <!-- <div  *ngFor="let q of item.item.properties ">
+                            <label for="{{q.name}}">{{q.label}}</label>
+                            <input  id="{{q.name}}"  name="{{q.name}}" [placeholder]="q.name" >
+                    </div>  -->
                </div>
            </div>
 
            <!-- OBJECT -->
-           <div *ngIf="item.type == 'object'">
-               <label for="">{{item.label}}</label>
-                <div *ngFor="let item of item.properties">
-                   <input type="text" [placeholder]="item.name">
-                </div>
+           <div  *ngIf="item.type == 'object'">
+               <div formGroupName="{{item.name}}">
+                 <label for="">{{item.label}}</label>
+                    <div *ngFor="let item of item.properties">
+                         <input  [formControlName]="item.name"   type="text" [placeholder]="item.name">
+                    </div>
+               </div>
            </div>
         </div>
     
@@ -71,6 +77,10 @@
        
         <button (click)=" logVAlue()"  type="submit">submit</button>
     </form>
+
+
+
+
 
 
 
