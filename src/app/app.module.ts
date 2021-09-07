@@ -1,3 +1,4 @@
+import { LogPipe } from './form-builder/pipe';
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 
@@ -7,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
-  declarations: [AppComponent, FormBuilderComponent],
+  declarations: [AppComponent, FormBuilderComponent, LogPipe],
   imports: [BrowserModule, BrowserAnimationsModule ,ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],

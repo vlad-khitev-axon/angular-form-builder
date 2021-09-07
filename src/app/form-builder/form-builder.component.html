@@ -1,19 +1,23 @@
+<!-- ngNativeValidate -->
 
+<div class="wrapper">
 
-
-
-    <form [formGroup]= "myFormGroup" >
+    <form class="form" [formGroup]= "myFormGroup"  (submit)="handleSubmit($event)"   >
 
         <div   class="formGroup" *ngFor="let item of schema.properties ">
+
+         
+            
             <!-- STRING -->
            <div *ngIf="item.type == 'string'">
                <label  for="{{item.name}}">{{item.label}}</label>
                <input [formControlName]="item.name" 
                       id="{{item.name}}" 
                       name="{{item.name}}" 
-                      [type]="item?.inputType" 
+                      [type]="item?.inputType || 'text'" 
                       [placeholder]="item.name"
-                      *ngIf="!item.multiline; else textArea">
+                      *ngIf="!item.multiline; else textArea"
+                      >
 
                       <ng-template #textArea>
                           <textarea    id="{{item.name}}" name="{{item.name}}" 
@@ -28,7 +32,12 @@
            <!-- NUMBER -->
            <div *ngIf="item.type == 'number'" >
                 <label for="{{item.name}}">{{item.label}}</label>
-                <input [formControlName]="item.name" id="{{item.name}}" [placeholder]="item.name">
+                <input 
+                [formControlName]="item.name" 
+                id="{{item.name}}" 
+                [placeholder]="item.name"
+                type="text" 
+               >
            </div>
            <!-- ENUM -->
            <div *ngIf="item.type == 'enum'">
@@ -47,21 +56,25 @@
            </div>
 
            <!-- ARRAY -->
+          
            <div class="array__set" *ngIf="item.type == 'array'">
                 <label for="{{item.name}}">
-                    {{item.label}}
+                {{item.label}}
                 </label>
                <div formArrayName="{{item.name}}" >
-                    <div  >
-                        <div *ngFor = "let q of "></div>
+                   
+                    <div *ngFor="let res of getArray(myFormGroup, item.name)['controls']; let i = index">
+                        
+                        <p>{{ item | log }}</p> 
+                            <!-- <div  [formGroupName]="i"  *ngFor="let q of item.item.properties ">
+                                <label for="{{q.name}}">{{q.label}}</label>
+                                <input   id="{{q.name}}"  name="{{q.name}}" [placeholder]="q.name" >
+                            </div>   -->
+
                     </div>
-                     <!-- <div  *ngFor="let q of item.item.properties ">
-                            <label for="{{q.name}}">{{q.label}}</label>
-                            <input  id="{{q.name}}"  name="{{q.name}}" [placeholder]="q.name" >
-                    </div>  -->
                </div>
            </div>
-
+         
            <!-- OBJECT -->
            <div  *ngIf="item.type == 'object'">
                <div formGroupName="{{item.name}}">
@@ -73,13 +86,16 @@
            </div>
         </div>
     
-     <p>{{myFormGroup.value | json}}</p>
+    
        
-        <button (click)=" logVAlue()"  type="submit">submit</button>
+        <button  type="submit" >submit</button> 
+     <!-- [disabled]="!myFormGroup.valid" -->
     </form>
+    <pre >{{ this.myFormGroup.value | json }}</pre>
+    
 
 
-
+</div>
 
 
 

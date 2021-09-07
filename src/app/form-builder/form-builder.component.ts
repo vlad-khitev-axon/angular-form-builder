@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormArray, FormControl, FormGroup } from '@angular/forms'
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ObjectSchema } from './core/types'
 
 @Component({
@@ -19,53 +19,61 @@ export class FormBuilderComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.myFormGroup = this.creatForm(this.schema)
+  
+  }
 
-   
-
+  ngOnChanges() {   
+    this.myFormGroup = this.creatForm(this.schema) ;
     console.log(this.myFormGroup.controls)
   }
 
+
   creatForm(schema: ObjectSchema ) {
     const controls: any = {};
-
+    const allies:any = {};
     schema.properties.forEach(items => {
-      // console.log(question)
+      const required = true;
       if(items.type == 'string' || items.type == 'number' || items.type == 'enum' || items.type == 'boolean'){
-        controls[items.name] = new FormControl('') 
+        controls[items.name] = required ? new FormControl('' , Validators.required)
+        : new FormControl('')
       }
+
       else if(items.type == 'array'){
-        controls[items.name] = new FormArray([
-        this.creatForm(items.item)
+        controls[items.name] =  new FormArray([
+          this.formGroupCreat(items.item.name, items.item)
+      //  this.creatForm(items.item)
+
        ])
       }
       else if(items.type == 'object'){
         controls[items.name] = this.creatForm(items)
-        // items.properties.forEach(res => {
-        //   controls[res.name] = new FormControl('')
-        // })
-        
+       
       }
-      
     });
+    
     return new FormGroup(controls);
   }
 
-
-  logVAlue(){
-    console.log(this.myFormGroup.value)
-}
-
-  handleSubmit(event: Event) {
-    event.preventDefault()
-
-    // Here you have an event (of type SubmitEvent).
-    // You can go two ways:
-    // 1. Extract all form values from the event (so-called "uncontrolled form").
-    // 2. Use form engine that is built into Angular.
-    // Regardless of your choice, the goal is to submit all form values to `onSubmit` property.
-    // The structure (shape) of values should match the schema.
-
-    this.onSubmit.emit({})
+  // создаем группу 
+  formGroupCreat(key: string, schema: ObjectSchema){
+    return new FormGroup({ 
+      [key]: this.creatForm(schema)})
   }
+
+  // получаем массив
+  getArray(myFormGroup: FormGroup, nameArray: string){
+    return this.myFormGroup.get(nameArray) as FormArray;
+    
+  }
+
+  
+
+  
+  handleSubmit(event: Event) {
+    if(!this.myFormGroup.valid){
+      event.preventDefault()
+      }
+      else this.onSubmit.emit(this.myFormGroup.value)
+  }
+
 }
