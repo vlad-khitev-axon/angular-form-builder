@@ -33,40 +33,42 @@ export class FormBuilderComponent implements OnInit {
     const allies:any = {};
     schema.properties.forEach(items => {
       const required = true;
-      if(items.type == 'string' || items.type == 'number' || items.type == 'enum' || items.type == 'boolean'){
-        controls[items.name] = required ? new FormControl('' , Validators.required)
-        : new FormControl('')
-      }
-
-      else if(items.type == 'array'){
-        controls[items.name] =  new FormArray([
-          this.formGroupCreat(items.item.name, items.item)
-      //  this.creatForm(items.item)
-
+      if(items.type == 'string' || items.type == 'number'){
+        controls[items.name] = this.getControl(items)
+      }else if(items.type == 'array'){
+        controls[items.name] =  new FormArray([ 
+       this.creatForm(items.item)
        ])
-      }
-      else if(items.type == 'object'){
+      }else if(items.type == 'object'){
         controls[items.name] = this.creatForm(items)
-       
+      }else if( items.type == 'boolean'){
+        controls[items.name] = new FormControl('')
+      }else if(items.type == 'enum'){
+        controls[items.name] = new FormControl('')
       }
     });
     
     return new FormGroup(controls);
   }
+ 
 
-  // создаем группу 
-  formGroupCreat(key: string, schema: ObjectSchema){
-    return new FormGroup({ 
-      [key]: this.creatForm(schema)})
+  // проверка на валидацию
+  getControl(control :any){
+    if(control.required) return new FormControl('', Validators.required)
+    else return new FormControl('');
   }
 
   // получаем массив
   getArray(myFormGroup: FormGroup, nameArray: string){
-    return this.myFormGroup.get(nameArray) as FormArray;
+    return myFormGroup.get(nameArray) as FormArray;
     
   }
 
-  
+  addArray(nameArray: string){
+    (<FormArray>this.myFormGroup.controls[nameArray]).push(
+      new FormGroup({})
+    )
+  }
 
   
   handleSubmit(event: Event) {
