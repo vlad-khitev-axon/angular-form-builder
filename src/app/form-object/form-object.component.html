@@ -1,0 +1,51 @@
+<div  [formGroup]="forms">
+
+    <div   class="formGroup" *ngFor="let item of data.properties ">
+        <div  *ngIf="item.type == 'object'">
+             
+            <div class="attachments"  formGroupName="{{item.name}}" >
+            
+              <label for="">{{item.label}}</label>
+              
+                 <ng-container *ngFor="let item of item.properties">
+                     <ng-container *ngIf="item.type === 'string';"> 
+                         <input  [formControlName]="item.name"   
+                         type="text" 
+                         [placeholder]="item.name"
+                         >
+                     </ng-container>
+
+                     <ng-container *ngIf="item.type === 'object'">
+                         <div class="attachments"  formGroupName="{{item.name}}" >
+                             <label for="">{{item.label}}</label>
+                                 <ng-container *ngFor="let item of item.properties">
+                                     <ng-container *ngIf="item.type === 'string';"> 
+                                         <input  [formControlName]="item.name"  
+                                         type="text" 
+                                         [placeholder]="item.name"
+                                         > 
+                                     </ng-container >
+
+                                     <ng-container *ngIf="item.type === 'object'">
+                                         <div class="attachments"  formGroupName="{{item.name}}" >
+                                             <label for="">{{item.label}}</label>
+                                             <ng-container *ngFor="let item of item.properties">
+                                                 <ng-container *ngIf="item.type === 'string';"> 
+                                                    
+                                                     <input     [formControlName]="item.name" 
+                                                     type="text" 
+                                                     [placeholder]="item.name"
+                                                     >
+                                                 </ng-container >
+                                             </ng-container>
+                                         </div>  
+                                     </ng-container>
+                                 </ng-container>
+                         </div>
+                     </ng-container>
+                 </ng-container>
+            </div>
+        </div>    
+    </div>
+   </div> 
+   

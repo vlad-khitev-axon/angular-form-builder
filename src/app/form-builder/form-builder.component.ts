@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ObjectSchema } from './core/types'
 
 @Component({
@@ -16,7 +16,7 @@ export class FormBuilderComponent implements OnInit {
 
   myFormGroup!:FormGroup
 
-  constructor() {}
+  constructor(private fb:FormBuilder) {}
 
   ngOnInit(): void {
   
@@ -24,7 +24,7 @@ export class FormBuilderComponent implements OnInit {
 
   ngOnChanges() {   
     this.myFormGroup = this.creatForm(this.schema) ;
-    console.log(this.myFormGroup.controls)
+    // console.log(this.myFormGroup.controls)
   }
 
 
@@ -64,12 +64,23 @@ export class FormBuilderComponent implements OnInit {
     
   }
 
-  addArray(nameArray: string){
-    (<FormArray>this.myFormGroup.controls[nameArray]).push(
-      new FormGroup({})
-    )
-  }
+ // добавляем элемент с массива
+ addAlias(array: FormArray,name?: string) {
+  // console.log(array)
+  // array.push(this.fb.control(''));
+  const student = this.fb.group({
+    technology: ['', Validators.required],
+    experience: ['', Validators.required]
+  });
+  array.push(student);
+}
 
+
+// удаляем элемент с массива
+
+removeAllies(nameArray:FormArray,index: number) {
+  nameArray.removeAt(index);
+}
   
   handleSubmit(event: Event) {
     if(!this.myFormGroup.valid){
