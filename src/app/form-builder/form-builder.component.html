@@ -73,49 +73,82 @@
 
 
 
-           <!-- ARRAY -->
-          
+     
+                <!-- ARRAY -->
            <div class="array__set" *ngIf="item.type == 'array'">
-           
-                <div formArrayName="{{item.name}}" >
-                    <label for="{{item.name}}">
-                        {{item.label}}
-                    </label>
-                   
-                    <!-- <ng-container  *ngFor="let item of item.item.properties ">
-                        <pre>{{item.name | log}}</pre>
-                        <ng-container *ngIf="item.type == 'object'">
-                            
+                <div [formArrayName]="item.name" >
+                    <div *ngFor="let res of getArray(myFormGroup, item.name)['controls']; let i = index">
+                        <label for="{{item.name}}">
+                            {{item.label}}
+                        </label>
+                        <ng-container *ngIf="item.item">
+                            <div class="attachments"  >
+                                <label for="">{{item.item.label}}</label>
+                                <ng-container [formGroupName]="i" *ngFor="let obj of item.item.properties">
+                                        <ng-container *ngIf="obj.type === 'string' || obj.type === 'number' ;">
+                                            <input  [formControlName]="obj.name"
+                                            id="{{obj.name}}"
+                                            type="text" 
+                                            name="{{obj.name}}" 
+                                            [placeholder]="obj.name"
+                                            required>
+
+                                            
+                                        </ng-container>
+
+                                        <!-- <ng-container *ngIf="obj.type === 'array';">
+                                            <div class="attachments"  [formArrayName]="item.name" >
+                                                <div *ngFor="let res of getArray(myFormGroup, item.name)['controls']; let i = index">
+                                                    <label for="">{{obj.label}}</label>
+                                                        <ng-container *ngIf="obj.item">
+                                                                <div  class="attachments" >
+                                                                    <label for="">{{obj.item.label}}</label>
+                                                                        <ng-container [formGroupName]="i" *ngFor="let key of obj.item.properties">
+                                                                        <input  [formControlName]="key.name"
+                                                                        id="{{key.name}}"
+                                                                        type="text" 
+                                                                        name="{{key.name}}" 
+                                                                        [placeholder]="key.type"
+                                                                        required>
+                                                                            </ng-container>
+                                                                </div>
+                                                        </ng-container>
+                                                </div>
+                                                
+                                                <button>Add</button>
+                                            </div> 
+                                        </ng-container> -->
+                                   </ng-container> 
+                                   <button 
+                                   (click)="removeQuestion(getArray(myFormGroup, item.name),i)"
+                                   type="button" 
+                                   *ngIf="getArray(myFormGroup, item.name)['controls'].length > 1">delete</button>
+                            </div>
                         </ng-container>
-                    </ng-container> -->
+                    </div>   
+                    <!-- <ng-container>
 
-
-                    <!-- <div *ngFor="let res of getArray(myFormGroup, item.name)['controls']; let i = index">
-                        <div  [formGroupName]="i"  
-                              *ngFor="let q of item.item.properties ">
-                            <label for="{{q.name}}">{{q.label}}</label>
-                            <input  [formControlName]="q.name"
-                                    id="{{q.name}}"
-                                    type="text" 
-                                    name="{{q.name}}" 
-                                    [placeholder]="q.name"
-                                    required>
-                                    <p>{{ getArray(myFormGroup, item.name)['controls'].length | log }}</p>
-                        </div> 
+                        <div *ngFor="let res of getArray(myFormGroup, item.name)['controls']; let i = index">
+                            <div  [formGroupName]="i">
+                                
+        
+                            </div> 
+                            
+                       
+                
                         <button 
-                                (click)="removeAllies(getArray(myFormGroup, item.name),i)"
+                                (click)="removeQuestion(getArray(myFormGroup, item.name),i)"
                                 type="button" 
                                 *ngIf="getArray(myFormGroup, item.name)['controls'].length > 1">delete</button>
-                    </div> 
-                    <button (click)="addAlias(getArray(myFormGroup,item.name))" type="button">Add</button> -->
+                        </div> 
+                    </ng-container> -->
+                    <button *ngIf="item.item.name === 'technology'" (click)="addAlias(getArray(myFormGroup,item.name))" type="button">Add</button>
+                    <button *ngIf="item.item.name === 'project'" (click)="addAliasP(getArray(myFormGroup,item.name))" type="button">Add</button>
+                    <button *ngIf="item.item.name === 'object'" (click)="addAliasAll(getArray(myFormGroup,item.name))" type="button">Add</button>
+                    <pre>{{item.item.name | log}}</pre>
                 </div>
            </div>
-         
-          
-          
-          
-          
-          
+   
            <!-- OBJECT -->
            
            <!-- <div  *ngIf="item.type == 'object'">
@@ -171,7 +204,7 @@
         </div>
 
          <!-- TEST TEST TEST TEST-->
-        <app-form-object [forms]="myFormGroup" [data]="schema"></app-form-object>
+         <app-form-object [forms]="myFormGroup" [data]="schema"></app-form-object>
         <button  type="submit" >submit</button> 
     </form>
     <pre >{{ this.myFormGroup.value | json }}</pre>

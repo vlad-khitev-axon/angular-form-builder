@@ -64,29 +64,53 @@ export class FormBuilderComponent implements OnInit {
     
   }
 
- // добавляем элемент с массива
- addAlias(array: FormArray,name?: string) {
-  // console.log(array)
-  // array.push(this.fb.control(''));
-  const student = this.fb.group({
-    technology: ['', Validators.required],
-    experience: ['', Validators.required]
-  });
-  array.push(student);
-}
+
+  // добавляем элемент в массива
+  addAlias(array: FormArray,name?: string) {
+    // console.log(array)
+    // array.push(this.fb.control(''));
+    const student = this.fb.group({
+      technology: ['', Validators.required],
+      experience: ['', Validators.required]
+    });
+   
+    array.push(student);
+  }
+
+  addAliasP(array: FormArray,name?: string) {
+    const student = this.fb.group({
+      name: ['', Validators.required],
+      link: ['', Validators.required]
+    });
+   
+    array.push(student);
+  }
+
+  addAliasAll(array: FormArray,name?: string) {
+    const student = this.fb.group({
+      string: ['', Validators.required]
+     
+    });
+   
+    array.push(student);
+  }
 
 
 // удаляем элемент с массива
 
-removeAllies(nameArray:FormArray,index: number) {
-  nameArray.removeAt(index);
-}
-  
+   removeQuestion(nameArray:FormArray,index: number) {
+    nameArray.removeAt(index);
+  }
+
+
   handleSubmit(event: Event) {
     if(!this.myFormGroup.valid){
       event.preventDefault()
+      // console.log(event)
       }
+      // else console.log(event)
       else this.onSubmit.emit(this.myFormGroup.value)
   }
+
 
 }
