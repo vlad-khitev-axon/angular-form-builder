@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ObjectSchema } from './core/types'
 
 @Component({
@@ -13,20 +14,97 @@ export class FormBuilderComponent implements OnInit {
   // Do not modify this property
   @Output() onSubmit = new EventEmitter<any>()
 
-  constructor() {}
+  myFormGroup!:FormGroup
 
-  ngOnInit(): void {}
+  constructor(private fb:FormBuilder) {}
 
-  handleSubmit(event: Event) {
-    event.preventDefault()
-
-    // Here you have an event (of type SubmitEvent).
-    // You can go two ways:
-    // 1. Extract all form values from the event (so-called "uncontrolled form").
-    // 2. Use form engine that is built into Angular.
-    // Regardless of your choice, the goal is to submit all form values to `onSubmit` property.
-    // The structure (shape) of values should match the schema.
-
-    this.onSubmit.emit({})
+  ngOnInit(): void {
+  
   }
+
+  ngOnChanges() {   
+    this.myFormGroup = this.creatForm(this.schema) ;
+    // console.log(this.myFormGroup.controls)
+  }
+
+
+  creatForm(schema: ObjectSchema ) {
+    const controls: any = {};
+    const allies:any = {};
+    schema.properties.forEach(items => {
+      const required = true;
+      if(items.type == 'string' || items.type == 'number'){
+        controls[items.name] = this.getControl(items)
+      }else if(items.type == 'array'){
+        controls[items.name] =  new FormArray([ 
+       this.creatForm(items.item)
+       ])
+      }else if(items.type == 'object'){
+        controls[items.name] = this.creatForm(items)
+      }else if( items.type == 'boolean'){
+        controls[items.name] = new FormControl('')
+      }else if(items.type == 'enum'){
+        controls[items.name] = new FormControl('')
+      }
+    });
+    
+    return new FormGroup(controls);
+  }
+ 
+
+  // проверка на валидацию
+  getControl(control :any){
+    if(control.required) return new FormControl('', Validators.required)
+    else return new FormControl('');
+  }
+
+  // получаем массив
+  getArray(myFormGroup: FormGroup, nameArray: string){
+    return myFormGroup.get(nameArray) as FormArray;
+    
+  }
+
+// добавляем элемент с массива
+addAlias(array: FormArray) {
+  // console.log(array)
+  // array.push(this.fb.control(''));
+  const student = this.fb.group({
+    technology: ['', Validators.required],
+    experience: ['', Validators.required]
+  });
+  array.push(student);
+}
+
+addAliasP(array: FormArray) {
+  const student = this.fb.group({
+    name: ['', Validators.required],
+    link: ['', Validators.required]
+  });
+  array.push(student);
+}
+
+addAliasSimple(array: FormArray) {
+  const student = this.fb.group({
+    string: ['', Validators.required]
+  });
+  array.push(student);
+}
+
+addAliasComplex(array: FormArray) {
+  const student = this.fb.group({
+    string: ['', Validators.required]
+  });
+  array.push(student);
+}
+
+// удаляем элемент с массива
+ removeQuestion(nameArray:FormArray,index: number) {
+  nameArray.removeAt(index);
+}
+
+handleSubmit(event: Event) {
+   this.onSubmit.emit(this.myFormGroup.value)
+}
+
+
 }
